@@ -320,23 +320,6 @@ public final class AssetTransferTest {
         }
 
         @Test
-        public void whenAssetExistsAndUnduplicable() {
-            AssetTransfer contract = new AssetTransfer();
-            Context ctx = mock(Context.class);
-            ChaincodeStub stub = mock(ChaincodeStub.class);
-            when(ctx.getStub()).thenReturn(stub);
-            when(stub.getStringState("asset1"))
-                    .thenReturn("{ \"assetID\": \"asset1\", \"color\": \"red\", \"size\": 3,"
-                     + "\"owner\": \"SD\", \"appraisedValue\": 500 }");
-            Throwable thrown = catchThrowable(() -> {
-                contract.DuplicateAsset(ctx, "asset1", "SD_dup");
-            });
-            assertThat(thrown).isInstanceOf(ChaincodeException.class).hasNoCause()
-                    .hasMessage("Asset asset1 already exists");
-            assertThat(((ChaincodeException) thrown).getPayload()).isEqualTo("ASSET_ALREADY_EXISTS".getBytes());
-        }
-
-        @Test
         public void whenAssetDoesNotExist() {
             AssetTransfer contract = new AssetTransfer();
             Context ctx = mock(Context.class);
